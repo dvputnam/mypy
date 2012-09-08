@@ -3,49 +3,22 @@
 # By Douglas Putnam
 # File: my.py
 # Date: Tue Sep  4 19:05:57 PDT 2012
-"""
-**************************************************************************
-LICENSE
 
-Copyright (C) 2012 Douglas Putnam
+""" 
+The my.py framework 
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Use this mini web framework to reduce some of the repetitive and non-productive
+aspects of working with HTML. This little script does one thing to make your
+life better: it creates a simple templating system that allows you to use the 
+same HTML template for many pages. 
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.    
-
-**************************************************************************
-
-README
-
-The my.py framework is a mini web framework written to eliminate 
-some of the drudgery of working with many HTML files. This little script 
-does one thing to make your life better: it creates a simple templating 
-system that allows you to use a single HTML template for many dynamically 
-created pages. To make this work,
-
-    1) You have to agree to follow the rules of the fremework.
-
-    2) You have to create the some HTML templates yourself.
-
-    3) my.py will insert the dynamic content into the template.
-
-    4) You can have multiple templates and specify them in the URL.
-
-    5) Templates and dynamic pages are kept out of the web directory and are
+    1) You create the HTML templates.
+    2) my.py inserts the dynamic content into the template.
+    3) You can have multiple templates and specify them in the URL.
+    4) Templates and dynamic pages are kept out of the web directory and are
        not directly accessible via a browser.
 
-A TYPICAL my.py URL:
-
-This a URL for a single html files named lab2.1.html
+TYPICAL URL:
 
     http://csmcis2.csmcis.com/~YOURNAME/my.py/lab2.1
 
@@ -53,10 +26,8 @@ This a URL for a single html files named lab2.1.html
 
     1) my.py parses the URL and sees that you want to display lab2.1.html 
        (notice the .html was omitted for prettiness)
-
     2) my.py finds lab2.1.html and inserts it into a "template" which you
        can use with all of your HTML pages.
-
     3) By using a template, you can change the look of all of your pages by
        simply changing the HTML in the template, and all of your pages will
        inherit the changes.
@@ -216,11 +187,17 @@ except IOError:
 
 page = DEFAULT_PAGE
 
+message ="The page you are looking for is not available."
+
 if 'PATH_INFO' in os.environ.keys():
     parts = os.environ['PATH_INFO'].split('/')
     parts = [ i for i in parts if i != '']
     if parts:
         page = cgi.escape(parts[0]) + '.html'
+        if page == 'sitemap.html':
+            page="error404.html"
+            message = 'The sitemap is not available.'
+
         if not os.path.isfile(HTML5 + page):
             page = ERROR_404
 
@@ -231,6 +208,9 @@ if 'PATH_INFO' in os.environ.keys():
 
 layout = open(layout_path,'r').read()
 content = open(HTML5 + page,'r').read()
+if page == 'error404.html':
+    content = content.format(content=message)
+
 res = re.search('<!--\s*title="?([^"]*)"?\s*-->',content)
 title = page
 if res:
@@ -242,4 +222,5 @@ if res:
 
 # Must have a Content-type
 print('Content-type: text/html\n')
+
 print(layout.format(title=title,content=content))
