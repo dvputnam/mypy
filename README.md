@@ -14,15 +14,15 @@ into your masterfully conceived HTML template.
 
 To make this work,
 
-1) You have to follow the rules of the fremework.
+1. You have to follow the rules of the fremework.
 
-2) You have to create the some HTML templates yourself. 
+2. You have to create the some HTML templates yourself. 
 
-3) my.py will insert the dynamic content the user requests into the template.
+3. my.py will insert the dynamic content the user requests into the template.
 
-4) You can have multiple templates and specify them in the URL.
+4. You can have multiple templates and specify them in the URL.
 
-5) For security's sake templates and dynamic pages are kept out of 
+5. For security's sake templates and dynamic pages are kept out of 
        the web directory and are not directly accessible via a browser.
 
       
@@ -35,13 +35,13 @@ the One Template
 
 How It Works:
 
-1) my.py parses the URL and sees that you want to display lab2.1.html 
+1. my.py parses the URL and sees that you want to display lab2.1.html 
        (notice the .html was omitted in the URL for prettiness)
 
-2) my.py finds lab2.1.html and inserts it into a "template" which you
+2. my.py finds lab2.1.html and inserts it into a "template" which you
        can use with all of your HTML pages.
 
-3) If lab2.1.htm doesn't exist, my.py show an Error 404 page, which you
+3. If lab2.1.htm doesn't exist, my.py show an Error 404 page, which you
        have created just for this occasion.
 
 
@@ -56,24 +56,24 @@ your pages by including the template name in the URL, like this:
 
 How It Works -
 
-1) my.py sees that you want to use a template named gothic.html. (Note how we 
+1. my.py sees that you want to use a template named gothic.html. (Note how we 
        cleverly omitted the .html to keep the URL pretty?)
 
-2) my.py sees that you want to insert the contents of lab2.1.html into the
+2. my.py sees that you want to insert the contents of lab2.1.html into the
        your special gothic template that you think is so cool.
 
-3) This means that you have a template named gothic.html in the layouts
+3. This means that you have a template named gothic.html in the layouts
        directory.
 
-4) If the URL asks for a template that doesn't exist, my.py uses the
+4. If the URL asks for a template that doesn't exist, my.py uses the
        default.htm template
 
 ## OTHER FEATURES:
 
-1) If you request a non-existent layout, you get the default layout.
-2) If you request a non-existent HTML page, you get your customized error404.html page.
-3) No one can view any of your pages directly: everything goes through my.py
-4) All requests are sanitized so that no one can mess with you.
+1. If you request a non-existent layout, you get the default layout.
+2. If you request a non-existent HTML page, you get your customized error404.html page.
+3. No one can view any of your pages directly: everything goes through my.py
+4. All requests are sanitized so that no one can mess with you.
 
 
 ## REQUIREMENTS:
