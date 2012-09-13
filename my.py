@@ -5,9 +5,8 @@
 # Date: Tue Sep  4 19:05:57 PDT 2012
 
 """ 
-
-Before operating this machinery, read the README.md file.
-
+Before operating this machinery, read the README.md file
+that came with the file.
 
 """
 #############  my.py at work #################
@@ -85,7 +84,7 @@ except IOError:
     os.sys.exit()
 
     
-#################### END OF SETUP #######################
+#################### This Part Does All The Work #######################
 
 
 # Is there some special instruction in the URL?
@@ -95,15 +94,39 @@ except IOError:
 page = DEFAULT_PAGE
 
 message404 ="The page you are looking for is not available."
+#print('Content-type:text/html\n')
 
 if 'PATH_INFO' in os.environ.keys():
     parts = os.environ['PATH_INFO'].split('/')
+
     parts = [ i for i in parts if i != '']
+    #print(parts)
+
     if parts:
+
+#        if len(parts) is 2:
+#            page = parts[0]
+#            template = parts[1]
+#            
+#        if len(parts) is 3:
+#            directory = parts[0]
+#            page = directory + '/' + parts[1]
+#            template = parts[2]
+#            parts[0] = page
+
+
         page = cgi.escape(parts[0]) + '.html'
+
+
         if page == 'sitemap.html':
-            page="error404.html"
-            message404 = 'The sitemap is not available.'
+            files = os.listdir(HTML5)
+            names = []
+
+            for file_name in files:
+                if os.path.isdir(HTML5 + file_name): continue
+                names.append("<a href='/~{username}/my.py/{filename1}'>{filename2}</a>".format(username=username,filename1=file_name[:-5],filename2=file_name[:-5]))
+
+            sitemap_links = "<ul><li>" + "</li><li>".join(names) + "</li></ul>"
 
         if not os.path.isfile(HTML5 + page):
             page = ERROR_404
@@ -115,10 +138,17 @@ if 'PATH_INFO' in os.environ.keys():
 
 layout = open(layout_path,'r').read()
 content = open(HTML5 + page,'r').read()
+
+# insert the Error Message
 if page == 'error404.html':
     content = content.format(content=message404)
 
-res = re.search('<!--\s*title="?([^"]*)"?\s*-->',content)
+# insert the sitemap links
+if page == 'sitemap.html':
+    content = content.format(sitemap_links=sitemap_links)
+
+# Extract the title from the HTML page
+res = re.search('<!--\s*title="([^"]*)"\s*-->',content)
 title = page
 if res:
     title = res.group(1)
@@ -131,3 +161,33 @@ if res:
 print('Content-type: text/html\n')
 
 print(layout.format(title=title,content=content))
+
+"""
+<h2>
+<a name="every-software-project-needs-a-license" class="anchor" href="#every-software-project-needs-a-license"><span class="mini-icon mini-icon-link"></span></a>EVERY SOFTWARE PROJECT NEEDS A LICENSE</h2>
+
+<blockquote>
+<p>LICENSE</p>
+
+<p>Copyright (C) 2012 Douglas Putnam</p>
+
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.    </p>
+</blockquote>
+
+<h2>
+<a name="contact" class="anchor" href="#contact"><span class="mini-icon mini-icon-link"></span></a>CONTACT</h2>
+
+<p><a href="mailto:putnamd@smccd.edu">putnamd@smccd.edu</a></p>
+"""
+
