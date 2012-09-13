@@ -12,7 +12,7 @@ CSS and Javascript in this One Template to rule them all. When you have
 a particular piece of content, my.py would simply insert that content
 into your masterfully conceived HTML template. 
 
-To make this work,
+__To make this work__
 
 1. You have to follow the rules of the fremework.
 2. You have to create the some HTML templates yourself. 
@@ -29,7 +29,7 @@ the One Template
 
     http://csmcis2.csmcis.com/~YOURNAME/my.py/lab2.1
 
-How It Works:
+__How It Works__
 
 1. my.py parses the URL and sees that you want to display lab2.1.html 
        (notice the .html was omitted in the URL for prettiness)
@@ -48,7 +48,7 @@ your pages by including the template name in the URL, like this:
                                                        |
     http://cmscis2.csmcis.com/~YOURNAME/my.py/lab2.1/gothic
 
-How It Works -
+__How It Works__
 
 1. my.py sees that you want to use a template named gothic.html. (Note how we 
        cleverly omitted the .html to keep the URL pretty?)
