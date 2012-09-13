@@ -4,11 +4,30 @@
 # File: my.py
 # Date: Tue Sep  4 19:05:57 PDT 2012
 
-""" 
-Before operating this machinery, read the README.md file
-that came with the file.
+############################################################################ 
+#  Before operating this machinery, read the README.md file
+#  and the LICENSE.md that came with my.py.
+#  
+#  LICENSE
+#    
+#  Copyright (C) 2012 Douglas Putnam
+#  
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.    
+#    
+#  CONTACT <a href="mailto:putnamd@smccd.edu">putnamd@smccd.edu</a>
+############################################################################ 
 
-"""
 #############  my.py at work #################
 import os
 import cgi
@@ -161,33 +180,4 @@ if res:
 print('Content-type: text/html\n')
 
 print(layout.format(title=title,content=content))
-
-"""
-<h2>
-<a name="every-software-project-needs-a-license" class="anchor" href="#every-software-project-needs-a-license"><span class="mini-icon mini-icon-link"></span></a>EVERY SOFTWARE PROJECT NEEDS A LICENSE</h2>
-
-<blockquote>
-<p>LICENSE</p>
-
-<p>Copyright (C) 2012 Douglas Putnam</p>
-
-<p>This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.</p>
-
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.</p>
-
-<p>You should have received a copy of the GNU General Public License
-along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.    </p>
-</blockquote>
-
-<h2>
-<a name="contact" class="anchor" href="#contact"><span class="mini-icon mini-icon-link"></span></a>CONTACT</h2>
-
-<p><a href="mailto:putnamd@smccd.edu">putnamd@smccd.edu</a></p>
-"""
 
