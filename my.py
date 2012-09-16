@@ -14,13 +14,9 @@ import os
 import cgi
 import re
 import cgitb
-
-class MyError(Exception):
-    def __init__(self,value):
-        self.value = value
-    def __str__(self):
-        return(repr(self.value))
-
+cgitb.enable()
+params = cgi.FieldStorage()
+base =  os.getcwd() + '/'
 
 """CONFIGURATION ---  ENTER YOUR CSMCIS2 USER NAME"""
 username = 'YOUR USERID GOES HERE'
@@ -30,28 +26,27 @@ username = 'coolj'
 coursename = 'YOUR COURSENAME GOES HERE'
 coursename = 'cis127'
 
+
+class ConfigurationException(Exception):
+    def __init__(self,value):
+        self.value = value
+    def __str__(self):
+        return(repr(self.value))
+
 try: 
     if username is 'YOUR USERID GOES HERE':
-        raise(MyError('You must configure your username before continuing.'))
+        raise(ConfigurationException('You must configure your username before continuing.'))
     if coursename is 'YOUR COURSENAME GOES HERE':
-        raise(MyError('You have to configure your coursename before continuing.'))
+        raise(ConfigurationException('You have to configure your coursename before continuing.'))
 except Exception as e:
     print(e.value)
     os.sys.exit()
 
 
-    
-cgitb.enable()
-
-params = cgi.FieldStorage()
-
-base =  os.getcwd() + '/'
-
 # Assets are the things your your web site provides:
 # HTML, CSS, Javascript, etc.
 # Assets are kept out of the web directory, but inside
 # of your home directory in a folder names "assets"
-
 assets = os.path.expanduser('~' + username) + '/assets/'
 
 #DIRECTORIES
@@ -63,6 +58,20 @@ HTML5           = ASSETS + 'html5/'
 DEFAULT_LAYOUT  = 'default.html'
 ERROR_404       = 'error404.html'
 DEFAULT_PAGE    = 'index.html'
+
+"""You need this directory structure """
+
+dirstructures = """<pre>
+$HOME/assets/cis127/
+                :---layouts/
+                :         :---default.html
+                :
+                :---html5/
+                        :---index.html
+                        :---error404.html
+                        :---and any other HTML files you want
+</pre>
+"""
 
 layout_path = os.path.join(LAYOUTS, DEFAULT_LAYOUT)
 
@@ -85,7 +94,6 @@ except IOError:
 
     
 #################### This Part Does All The Work #######################
-
 
 # Is there some special instruction in the URL?
 # http://csmcis2.csmcis.com/~yourname/my.py/page_name/layout_name
@@ -149,7 +157,7 @@ if page == 'sitemap.html':
 
 # Extract the title from the HTML page
 res = re.search('<!--\s*title="([^"]*)"\s*-->',content)
-title = page
+title = page[:-5]
 if res:
     title = res.group(1)
 
