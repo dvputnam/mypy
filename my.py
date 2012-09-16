@@ -18,11 +18,11 @@ cgitb.enable()
 params = cgi.FieldStorage()
 base =  os.getcwd() + '/'
 
-"""CONFIGURATION ---  ENTER YOUR CSMCIS2 USER NAME"""
+"""CONFIGURATION:  Enter your csmcis2 user name """
 username = 'YOUR USERID GOES HERE'
 username = 'coolj'
 
-"""CONFIGURATION ---  ENTER YOUR COURSE NAME """
+"""CONFIGURATION:  Enter your course name """
 coursename = 'YOUR COURSENAME GOES HERE'
 coursename = 'cis127'
 
@@ -43,13 +43,17 @@ except Exception as e:
     os.sys.exit()
 
 
-# Assets are the things your your web site provides:
-# HTML, CSS, Javascript, etc.
-# Assets are kept out of the web directory, but inside
-# of your home directory in a folder names "assets"
+# Assets are the things your your web site provides through my.py:
+# You also have other assets such as CSS, images, and Javascript
+# files that are kept inside your web directory; they are delivered
+# by the Apache web server directly, not via my.py.
+# For good file management, you need a directory named "assets"
+# inside your public_html directory.
 assets = os.path.expanduser('~' + username) + '/assets/'
 
-#DIRECTORIES
+# It's easy to change any of these defaults 
+# if you know what you're doing.
+# DEFAULTDIRECTORIES
 ASSETS          = assets + coursename + '/'
 LAYOUTS         = ASSETS + 'layouts/'
 HTML5           = ASSETS + 'html5/'
