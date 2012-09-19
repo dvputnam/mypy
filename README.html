@@ -1,0 +1,87 @@
+<h1 id="readme">README</h1>
+<h2 id="my.py-a-simple-web-framework">my.py, a simple web framework</h2>
+<p>The my.py framework is a mini web framework that aspires to eliminate some of the drudgery of working with the many HTML files we will create throughout the semester. This little script tries to one simple thing to make your life better: it creates a simple templating system that allows you to use a single HTML template for an infinite number of pages. Ideally you would put your DOCTYPE, HEAD element, including links to CSS and Javascript in this One Template to rule them all. When you have a particular piece of content, my.py would simply insert that content into your masterfully conceived HTML template.</p>
+<p><strong>To make this work</strong></p>
+<ol type="1">
+<li>You have to follow the rules of the fremework.</li>
+<li>You have to create the some HTML templates yourself.</li>
+<li>my.py will insert the dynamic content the user requests into the template.</li>
+<li>You can have multiple templates and specify them in the URL.</li>
+<li>For security's sake templates and dynamic pages are kept out of the web directory and are not directly accessible via a browser.</li>
+</ol>
+<h2 id="a-typical-my.py-url">A TYPICAL my.py URL:</h2>
+<p>This URL fetches a single html file named lab2.1.html and inserts it into the One Template</p>
+<pre><code>http://csmcis2.csmcis.com/~YOURNAME/my.py/lab2.1</code></pre>
+<p><strong>How It Works</strong></p>
+<ol type="1">
+<li>my.py parses the URL and sees that you want to display lab2.1.html (notice the .html was omitted in the URL for prettiness)</li>
+<li>my.py finds lab2.1.html and inserts it into a &quot;template&quot; which you can use with all of your HTML pages.</li>
+<li>If lab2.1.htm doesn't exist, my.py show an Error 404 page, which you have created just for this occasion.</li>
+</ol>
+<h2 id="typical-url-with-specific-template">TYPICAL URL WITH SPECIFIC TEMPLATE:</h2>
+<p>my.py can work with multiple templates. You can change the look of all of your pages by including the template name in the URL, like this:</p>
+<h3 id="the-template">THE TEMPLATE</h3>
+<pre><code>                                                   |
+http://cmscis2.csmcis.com/~YOURNAME/my.py/lab2.1/gothic</code></pre>
+<p><strong>How It Works</strong></p>
+<ol type="1">
+<li>my.py sees that you want to use a template named gothic.html. (Note how we cleverly omitted the .html to keep the URL pretty?)</li>
+<li>my.py sees that you want to insert the contents of lab2.1.html into the your special gothic template that you think is so cool.</li>
+<li>This means that you have a template named gothic.html in the layouts directory.</li>
+<li>If the URL asks for a template that doesn't exist, my.py uses the default.htm template</li>
+</ol>
+<h2 id="other-features">OTHER FEATURES:</h2>
+<ol type="1">
+<li>If you request a non-existent layout, you get the default layout.</li>
+<li>If you request a non-existent HTML page, you get your customized error404.html page.</li>
+<li>No one can view any of your pages directly: everything goes through my.py</li>
+<li>All requests are sanitized so that no one can mess with you.</li>
+</ol>
+<h2 id="requirements">REQUIREMENTS:</h2>
+<p>To make this all work, you need to create some directories and some default files:</p>
+<h3 id="directories">DIRECTORIES:</h3>
+<pre><code>      /home/students/YOURNAME/assets/cis127/layouts/
+      /home/students/YOURNAME/assets/cis127/html5/</code></pre>
+<h3 id="files">FILES:</h3>
+<pre><code>      /home/students/YOURNAME/assets/cis127/layouts/default.html
+      /home/students/YOURNAME/assets/cis127/html5/index.html
+      /home/students/YOURNAME/assets/cis127/html5/error404.html</code></pre>
+<h2 id="example-minimal-default.html-layout">EXAMPLE MINIMAL default.html LAYOUT:</h2>
+<p>You can make your layouts as elaborate as you wish, or as simple.</p>
+<ol type="1">
+<li>{title} will be filled in automatically</li>
+<li><p>{content} will be the HTML page in the URL</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;title&gt;{title}&lt;/title&gt; 
+&lt;/head&gt;
+{content}</code></pre></li>
+</ol>
+<h2 id="example-minimal-html-page">EXAMPLE MINIMAL HTML PAGE</h2>
+<p>This file would be placed in your HOME/assets/cis127/html5/ directory. The title in the comment will be inserted into the HEAD tag. The entire HTML page will be inserted where the {content} is located.</p>
+<pre><code>    &lt;!-- title=&quot;My Beautiful Web Page&quot; --&gt;
+    &lt;h1&gt;Hello, world&lt;/h1&gt;</code></pre>
+<h2 id="known-issues">KNOWN ISSUES</h2>
+<p><code>my.py</code> is written in Python3. If you want to print &quot;{}&quot;&quot; characters, as in an embedded stylesheet, you have to double up the braces, or you will have fatal errors:</p>
+<p><strong>BAD</strong></p>
+<pre><code>  p {background-color:blue}</code></pre>
+<p><strong>GOOD</strong></p>
+<pre><code>  p {{background-color:blue}}</code></pre>
+<h2 id="every-software-project-needs-a-license">EVERY SOFTWARE PROJECT NEEDS A LICENSE</h2>
+<blockquote>
+<p>LICENSE</p>
+</blockquote>
+<blockquote>
+<p>Copyright (C) 2012 Douglas Putnam</p>
+</blockquote>
+<blockquote>
+<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/"><code class="url">http://www.gnu.org/licenses/</code></a>.</p>
+</blockquote>
+<h2 id="contact">CONTACT</h2>
+<p>putnamd@smccd.edu</p>
+<p>Keep hacking...</p>
+<p>Doug Putnam</p>

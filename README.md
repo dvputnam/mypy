@@ -93,14 +93,16 @@ You can make your layouts as elaborate as you wish, or as simple.
         <html lang=en>
         <head>
           <meta charset="utf-8">
-          <title>%s</title> 
+          <title>{title}</title> 
         </head>
         {content}
 
        
 ## EXAMPLE MINIMAL HTML PAGE
 
-The title in the comment will be inserted into the HEAD tag. 
+This file would be placed in your HOME/assets/cis127/html5/ directory. 
+The title in the comment will be inserted into the HEAD tag. The entire
+HTML page will be inserted where the {content} is located.
     
         <!-- title="My Beautiful Web Page" -->
         <h1>Hello, world</h1>
