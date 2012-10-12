@@ -5,24 +5,25 @@
 # Date: Tue Sep  4 19:05:57 PDT 2012
 
 """ 
-Before operating this machinery, read the README.md file
-that came with the file.
+Before operating this machinery, read the README.md file that came with the file.
 
 """
 #############  my.py at work #################
+
 import os
 import cgi
 import re
 import cgitb
 cgitb.enable()
+
 params = cgi.FieldStorage()
 base =  os.getcwd() + '/'
 
-"""CONFIGURATION:  Enter your csmcis2 user name """
+"""CONFIGURATION ---  ENTER YOUR CSMCIS2 USER NAME"""
 username = 'YOUR USERID GOES HERE'
 username = 'coolj'
 
-"""CONFIGURATION:  Enter your course name """
+"""CONFIGURATION ---  ENTER YOUR COURSE NAME """
 coursename = 'YOUR COURSENAME GOES HERE'
 coursename = 'cis127'
 
@@ -43,37 +44,41 @@ except Exception as e:
     os.sys.exit()
 
 
-# Assets are the things your your web site provides through my.py:
-# You also have other assets such as CSS, images, and Javascript
-# files that are kept inside your web directory; they are delivered
-# by the Apache web server directly, not via my.py.
-# For good file management, you need a directory named "assets"
-# inside your public_html directory.
+# Assets are the things your your web site provides:
+# HTML, CSS, Javascript, etc.
+# Assets are kept out of the web directory, but inside
+# of your home directory in a folder names "assets"
 assets = os.path.expanduser('~' + username) + '/assets/'
 
-# It's easy to change any of these defaults 
-# if you know what you're doing.
-# DEFAULTDIRECTORIES
-ASSETS          = assets + coursename + '/'
+#DIRECTORIES
+ASSETS          = assets
 LAYOUTS         = ASSETS + 'layouts/'
-HTML5           = ASSETS + 'html5/'
+HTML5           = ASSETS + 'cis127/'
 
 #FILES
-DEFAULT_LAYOUT  = 'default.html'
-ERROR_404       = 'error404.html'
-DEFAULT_PAGE    = 'index.html'
+ERROR_404          = 'error404.html'
+DEFAULT_CONTROLLER = 'default'
+DEFAULT_PAGE       = 'index.html'
+DEFAULT_LAYOUT     = 'default.html'
 
 """You need this directory structure """
 
 dirstructures = """<pre>
-$HOME/assets/cis127/
-                :---layouts/
-                :         :---default.html
-                :
-                :---html5/
+$HOME/assets/
+           :---layouts/
+           :         :---default.html
+           :
+           :---default/
+           :          :---index.html
+           :          :---error404.html
+           :          :---and any other HTML files you want
+           :
+           :---solutions/
                         :---index.html
-                        :---error404.html
-                        :---and any other HTML files you want
+                        :---week1.html
+                        :---week2.html
+                        :---weekn.html
+
 </pre>
 """
 
@@ -91,77 +96,84 @@ except IOError:
 
 try:
     if not os.path.isfile(layout_path):
-        raise IOError('Missing default layout: ' + DEFAULT_LAYOUT)
+        raise IOError('Missing default layout: ' + LAYOUT)
 except IOError:
-    print("Then, create the default layout: " + DEFAULT_LAYOUT)
+    print("Then, create the default layout: " + LAYOUT)
     os.sys.exit()
 
     
 #################### This Part Does All The Work #######################
 
-# Is there some special instruction in the URL?
-# http://csmcis2.csmcis.com/~yourname/my.py/page_name/layout_name
+# Look for a special instruction in the URL.
+# http://csmcis2.csmcis.com/~yourname/my.py/PAGE_name/layout_name
 # Omit the .html
 
-page = DEFAULT_PAGE
+# default values for CONTROLLER, PAGE, template 
+CONTROLLER = DEFAULT_CONTROLLER
+LAYOUT     = DEFAULT_LAYOUT
+PAGE       = DEFAULT_PAGE
 
-message404 ="The page you are looking for is not available."
-#print('Content-type:text/html\n')
+message404 ="The PAGE you are looking for is not available."
 
 if 'PATH_INFO' in os.environ.keys():
     parts = os.environ['PATH_INFO'].split('/')
-
     parts = [ i for i in parts if i != '']
-    #print(parts)
+
 
     if parts:
-
-#        if len(parts) is 2:
-#            page = parts[0]
-#            template = parts[1]
-#            
-#        if len(parts) is 3:
-#            directory = parts[0]
-#            page = directory + '/' + parts[1]
-#            template = parts[2]
-#            parts[0] = page
-
-
-        page = cgi.escape(parts[0]) + '.html'
+        if len(parts) is 1:
+            CONTROLLER = DEFAULT_CONTROLLER
+            LAYOUT     = DEFAULT_LAYOUT
+            PAGE       = parts[0]
+        if len(parts) is 2:
+            CONTROLLER = parts[0]
+            PAGE = parts[1]
+        elif len(parts) is 3:
+            CONTROLLER = parts[0]
+            PAGE       = parts[1]
+            LAYOUT     = parts[2]
 
 
-        if page == 'sitemap.html':
-            files = os.listdir(HTML5)
-            names = []
+        if not os.path.isdir(os.path.join(ASSETS,CONTROLLER)):
+            CONTROLLER = DEFAULT_CONTROLLER
+            PAGE = ERROR_404
+            layout_path = os.path.join(LAYOUTS, DEFAULT_LAYOUT)
+        else:
+            PAGE = cgi.escape(PAGE) + '.html'
+            layout_path = os.path.join(LAYOUTS, LAYOUT)
 
-            for file_name in files:
-                if os.path.isdir(HTML5 + file_name): continue
-                names.append("<a href='/~{username}/my.py/{filename1}'>{filename2}</a>".format(username=username,filename1=file_name[:-5],filename2=file_name[:-5]))
+            if PAGE == 'sitemap.html':
+                files = os.listdir(os.path.join(ASSETS,CONTROLLER))
+                names = []
 
-            sitemap_links = "<ul><li>" + "</li><li>".join(names) + "</li></ul>"
+                for file_name in files:
+                    if os.path.isdir(os.path.join(ASSETS,CONTROLLER,file_name)): continue
+                    names.append("<a href='/~{username}/my.py/{controller}/{filename1}'>{filename2}</a>".format(controller=CONTROLLER,username=username,filename1=file_name[:-5],filename2=file_name[:-5]))
 
-        if not os.path.isfile(HTML5 + page):
-            page = ERROR_404
+                sitemap_links = "<ul><li>" + "</li><li>".join(names) + "</li></ul>"
 
-        if len(parts) > 1:
-            layout_path = os.path.join(LAYOUTS,cgi.escape(parts[1])) + '.html'
-            if not os.path.isfile(layout_path):
-                layout_path = os.path.join(LAYOUTS, DEFAULT_LAYOUT)
+            if not os.path.isfile(os.path.join(ASSETS,CONTROLLER,PAGE)):
+                PAGE = ERROR_404
+
+            if len(parts) > 1:
+                layout_path = os.path.join(LAYOUTS,LAYOUT) + '.html'
+                if not os.path.isfile(layout_path):
+                    layout_path = os.path.join(LAYOUTS, DEFAULT_LAYOUT)
 
 layout = open(layout_path,'r').read()
-content = open(HTML5 + page,'r').read()
+content = open(os.path.join(ASSETS,CONTROLLER,PAGE),'r').read()
 
 # insert the Error Message
-if page == 'error404.html':
+if PAGE == 'error404.html':
     content = content.format(content=message404)
 
 # insert the sitemap links
-if page == 'sitemap.html':
+if PAGE == 'sitemap.html':
     content = content.format(sitemap_links=sitemap_links)
 
-# Extract the title from the HTML page
+# Extract the title from the HTML PAGE
 res = re.search('<!--\s*title="([^"]*)"\s*-->',content)
-title = page[:-5]
+title = PAGE[:-5]
 if res:
     title = res.group(1)
 
@@ -172,7 +184,7 @@ if res:
 # Must have a Content-type
 print('Content-type: text/html\n')
 
-print(layout.format(title=title,content=content))
+print(layout.format(title=title,content=content,sitemap_link=CONTROLLER))
 
 """
 <h2>
